@@ -5,7 +5,7 @@
     <title>QR Scanner Demo</title>
 </head>
 <body>
-<h1>Scan from WebCam:</h1>
+<h1>Welcome! Please scan your QR code.</h1>
 <div id="video-container">
     <video id="qr-video"></video>
 </div>
@@ -53,18 +53,7 @@
 <b>Last detected at: </b>
 <span id="cam-qr-result-timestamp"></span>
 <br>
-<button id="start-button">Start</button>
-<button id="stop-button">Stop</button>
-<hr>
 
-<h1>Scan from File:</h1>
-<input type="file" id="file-selector">
-<b>Detected QR code: </b>
-<span id="file-qr-result">None</span>
-
-<!--<script src="../qr-scanner.umd.min.js"></script>-->
-<!--<script src="../qr-scanner.legacy.min.js"></script>-->
-<!--script type="module"-->
 <script src="{{url_for('static', filename='js/qr-scanner/qr-scanner.umd.min.js')}}"></script>
 <script>
     const video = document.getElementById('qr-video');
@@ -149,14 +138,6 @@
         scanner.toggleFlash().then(() => flashState.textContent = scanner.isFlashOn() ? 'on' : 'off');
     });
 
-    document.getElementById('start-button').addEventListener('click', () => {
-        scanner.start();
-    });
-
-    document.getElementById('stop-button').addEventListener('click', () => {
-        scanner.stop();
-    });
-
     // ####### File Scanning #######
 
     fileSelector.addEventListener('change', event => {
@@ -209,10 +190,6 @@
 
     hr {
         margin-top: 32px;
-    }
-    input[type="file"] {
-        display: block;
-        margin-bottom: 16px;
     }
 </style>
 </body>
