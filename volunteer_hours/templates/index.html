@@ -39,6 +39,15 @@
         <br>
         <b>Detected QR code: </b>
         <span id="cam-qr-result">None</span>
+        <br>
+        <br>
+        <b>Event to sign in/out for</b>
+        <br>
+        <select name="Event" method="GET" action="/">
+            {% for event in events %}
+                <option value="{{event}}">{{event}}</option>
+            {% endfor %}
+        </select>
         <script src="{{url_for('static', filename='js/qr-scanner/qr-scanner.umd.min.js')}}"></script>
         <script>
             const video = document.getElementById('qr-video');
