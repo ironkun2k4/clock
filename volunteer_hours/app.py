@@ -1,12 +1,15 @@
-import flask
-from flask import Flask, render_template
+from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
 events = ['2022 event 1', '2022 event 2', '2022 event 3']
 
 
-@app.route('/')
+@app.route('/', methods=['POST', 'GET'])
 def welcome():
-    content = render_template('index.html', events=events)
-    return content
+    if request.method == 'POST':
+        # TODO: Use request.form to access form input values
+        ...
+    else:
+        content = render_template('index.html', events=events)
+        return content
