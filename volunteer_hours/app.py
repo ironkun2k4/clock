@@ -6,10 +6,13 @@ events = ['2022 event 1', '2022 event 2', '2022 event 3']
 
 
 @app.route('/', methods=['POST', 'GET'])
-def welcome():
+def main_screen():
+    """
+    Define the main screen
+    """
     if request.method == 'POST':
         # Use request.form to access form input values
+        # Go to new page with response data
         ...
-    else:
-        content = render_template('index.html', events=events)
-        return content
+    content = render_template('index.html', events=events)
+    return content
