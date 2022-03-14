@@ -35,7 +35,7 @@ class Config(metaclass=ThreadSafeMeta):
       this object can be used through-out the code base
     """
     try:
-        __package = 'zoom_report'
+        __package = 'volunteer_hours'
         __version = '0.1.0'
         __default_env = 'dev'
         __logfile_name = f'{__package}-{__version}.log'
@@ -45,7 +45,7 @@ class Config(metaclass=ThreadSafeMeta):
         __config_dir = (Path().home() / 'AppData' / 'Local' / __package
                         if os.name == 'nt'
                         else Path().home() / '.config' / __package)
-        __ragic_opportunity_route = 'lynvolunteer/lyn-temp/5'
+        __ragic_opportunity_route = 'lynvolunteer/lyn-temp/9'
     except KeyError as error:
         sys.stderr.write(f"Dotenv config error: {error} is missing\n")
         sys.exit(1)
@@ -100,7 +100,7 @@ class Config(metaclass=ThreadSafeMeta):
         return cls.__config_dir
 
     @classmethod
-    def ragic_opportunity_route(cls) -> Path:
+    def ragic_opportunity_route(cls) -> str:
         """
         Getter for ragic opportunity route
         """
