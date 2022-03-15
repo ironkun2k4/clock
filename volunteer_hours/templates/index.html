@@ -19,43 +19,29 @@
         </div>
         <div>
             <b>Preferred camera:</b>
+            <br>
             <select id="cam-list">
                 <option value="environment" selected>Environment Facing (default)</option>
                 <option value="user">User Facing</option>
             </select>
         </div>
         <br>
-        <form>
-            <div>
-                <p>Detected QR code: </p>
-                <br>
-                <span id="cam-qr-result">None</span>
-            </div>
+        <form action="/action" method="POST">
+            <label for="cam-qr-result"><b>Detected QR code:</b></label>
             <br>
-            <div>
-                <label for="event">Event to sign in/out for</label>
-                <br>
-                <select id="event" name="event" method="GET" action="/">
-                    {% for event in events %}
-                        <option value="{{event}}">{{event}}</option>
-                    {% endfor %}
-                </select>
-            </div>
+            <span id="cam-qr-result">None</span>
             <br>
-            <div>
-                <label for="appt">Sign in/out time</label>
-                <br>
-                <input type=="time" id="appt" name="appt" min="9:00" max="18:00" required>
-            </div>
+            <input type="text" id="member-id" name"member-id">
+            <input type="submit" id="submit-btn" name="submit-btn" value="Submit">
         </form>
-        <input type="submit" value="Submit">
         <script src="{{url_for('static', filename='js/qr-scanner/qr-scanner.umd.min.js')}}"></script>
         <script>
             const video = document.getElementById('qr-video');
             const videoContainer = document.getElementById('video-container');
             const camList = document.getElementById('cam-list');
             const camQrResult = document.getElementById('cam-qr-result');
-            const fileSelector = document.getElementById('file-selector');
+            const memberId = document.getElementById('member-id');
+            const submitButton = document.getElementById('submit-btn');
             
             function setResult(label, result) {
                 console.log(result.data);
@@ -63,6 +49,11 @@
                 label.style.color = 'teal';
                 clearTimeout(label.highlightTimeout);
                 label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 100);
+
+                if (result.data.startsWith("LYN")) {
+                    memberId.setAttribute('value', result.data);
+                    submitButton.click();
+                }
             }
             
             // Web Cam Scanning

@@ -1,3 +1,5 @@
+import sys
+
 from flask import Flask, request, render_template
 
 from volunteer_hours.api.ragic import Ragic
@@ -11,15 +13,20 @@ def get_events() -> list[str]:
     return names
 
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/')
 def main_screen():
     """
     Define the main screen
     """
-    if request.method == 'POST':
-        # Use request.form to access form input values
-        # Go to new page with response data
-        ...
+    content = render_template('index.html')
+    return content
+
+
+@app.route('/action', methods=['POST'])
+def action_screen():
+    print(request.form, file=sys.stdout)
+    member_id = request.form.get('member-id')
+    print(member_id)
     events = get_events()
-    content = render_template('index.html', events=events)
+    content = render_template('action.html', events=events)
     return content
