@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Clock in/out</title>
+    </head>
+    <body>
+        <form>
+            <div>
+                <label for="event">Event to sign in/out for</label>
+                <br>
+                <select id="event" name="event" method="GET" action="/">
+                    {% for event in events %}
+                        <option value="{{event}}">{{event}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <br>
+            <div>
+                <label for="appt">Sign in/out time</label>
+                <br>
+                <input type=="time" id="appt" name="appt" min="9:00" max="18:00" required>
+            </div>
+        </form>
+        <input type="submit" value="Submit">
+    </body>
+</html>
