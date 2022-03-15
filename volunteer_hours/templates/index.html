@@ -31,8 +31,8 @@
             <span id="cam-qr-result">None</span>
         </div>
         <br>
-        <form id="form">
-            <input type="submit" id="submit-btn" name="submit-btn" value="Submit">
+        <form id="form" action='/action'>
+            <input type="submit" id="submit-btn" name="submit-btn" value="Send Data">
         </form> 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script src="{{url_for('static', filename='js/qr-scanner/qr-scanner.umd.min.js')}}"></script>
@@ -50,7 +50,6 @@
                     async: false,
                     data: {member_id: input}
                 });
-                return jqXHR.responseText;
             }
             
             function setResult(label, result) {
@@ -61,7 +60,11 @@
                 label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 100);
 
                 if (result.data.startsWith('LYN')) {
+                    $('#submit-btn').click(function() {
                         result = runPyScript(result.data);
+                        console.log(result);
+                    });
+                    submitButton.click();
                 }
             }
             

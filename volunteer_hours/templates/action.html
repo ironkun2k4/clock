@@ -7,7 +7,7 @@
     <body>
         <form>
             <div>
-                <label for="event">Event to sign in/out for</label>
+                <label for="event"><b>Event to sign in/out for</b></label>
                 <br>
                 <select id="event" name="event" method="GET" action="/">
                     {% for event in events %}
@@ -16,12 +16,7 @@
                 </select>
             </div>
             <br>
-            <div>
-                <label for="appt">Sign in/out time</label>
-                <br>
-                <input type=="time" id="appt" name="appt" min="9:00" max="18:00" required>
-            </div>
+            <input type="submit" value="Submit">
         </form>
-        <input type="submit" value="Submit">
     </body>
 </html>
