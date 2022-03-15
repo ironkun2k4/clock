@@ -1,14 +1,14 @@
 import sys
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, make_response
 
 from volunteer_hours.api.ragic import Ragic
 
 app = Flask(__name__)
 
 
-def get_events() -> list[str]:
-    events = Ragic().fetch_events('LYN1701685')
+def get_events(member_id) -> list[str]:
+    events = Ragic().fetch_events(member_id)
     names = [event['Opportunity'] for event in events.values()]
     return names
 
@@ -22,11 +22,14 @@ def main_screen():
     return content
 
 
-@app.route('/action', methods=['POST'])
+@app.route('/action', methods=['GET', 'POST'])
 def action_screen():
-    print(request.form, file=sys.stdout)
-    member_id = request.form.get('member-id')
-    print(member_id)
-    events = get_events()
+    if request.method == 'POST':
+        print(request.form, file=sys.stdout)
+        member_id = request.form.get('member_id')
+        events = get_events(member_id)
+        response = make_response(f"{{'response': {events}}}")
+        response.headers = {'Content-Type': 'application/json'}
+        return response
     content = render_template('action.html', events=events)
     return content
