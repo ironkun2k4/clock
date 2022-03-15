@@ -1,8 +1,6 @@
 """
 A wrapper for the Ragic API
 """
-import sys
-
 import requests
 
 from volunteer_hours import Config
@@ -21,12 +19,10 @@ class Ragic:
         """
         url = f'{self._base_url}/{api_route}'
         api_key = Config.ragic_api_key()
-        headers = {'Authorization': f'Basic {api_key}',
-                   'Content-Type': 'application/x-www-form-urlencoded'}
+        headers = {'Authorization': f'Basic {api_key}'}
         response = requests.get(url, headers=headers, params=params)
         if response.status_code == Http.OK:
             print(f"Data sent to {url}.")
-        print(response.text, flush=True)
         return response
 
     def fetch_events(self, member_id: str) -> dict:
