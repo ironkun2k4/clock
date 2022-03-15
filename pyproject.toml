@@ -7,8 +7,8 @@ authors = ["Jacky Lee <jla524@sfu.ca>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 Flask = "^2.0.3"
-dotenv-python = "^0.0.1"
 requests = "^2.27.1"
+python-dotenv = "^0.19.2"
 
 [tool.poetry.dev-dependencies]
 
