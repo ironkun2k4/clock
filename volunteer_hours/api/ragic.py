@@ -25,9 +25,26 @@ class Ragic:
             print(f"Data sent to {url}.")
         return response
 
+    def _send_data(self, api_route: str, data: dict) -> requests.Response:
+        """
+        Send data to the specified API route.
+        :param api_route: an API route in Ragic
+        :param data: data to be sent to Ragic
+        :returns: a response from Ragic
+        """
+        url = f'{self._base_url}/{api_route}'
+        api_key = Config.ragic_api_key()
+        headers = {'Authorization': f'Basic {api_key}'}
+        response = requests.post(url, data=data, headers=headers)
+        if response.status_code == Http.OK:
+            Logger.info(f"Data sent to {url}.")
+        return response
+
     def fetch_events(self, member_id: str) -> dict:
         """
-        Get a list of active events that the member signed up for
+        Get active events that the member signed up for
+        :param member_id: the associated member ID
+        :returns: events data from Ragic
         """
         payload = {'where': [f'{Attendance.TIMECLOCK_STATUS},eq,Open',
                              f'{Attendance.MEMBERSHIP_ID},eq,{member_id}'],
