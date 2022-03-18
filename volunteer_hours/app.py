@@ -41,7 +41,6 @@ def action_screen():
         response = make_response("{{'response': {member_id}}")
         response.headers = {'Content-Type': 'application/json'}
         return response
-    else:
-        events_list = member.get_events()
-        content = render_template('action.html', events=events_list)
-        return content
+    events_list = member.get_events()
+    content = render_template('action.html', events=events_list)
+    return content
