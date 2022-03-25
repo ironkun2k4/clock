@@ -37,7 +37,7 @@ class Ragic:
         headers = {'Authorization': f'Basic {api_key}'}
         response = requests.post(url, data=data, headers=headers)
         if response.status_code == Http.OK:
-            Logger.info(f"Data sent to {url}.")
+            print(f"Data sent to {url}.")
         return response
 
     def fetch_events(self, member_id: str) -> dict:
