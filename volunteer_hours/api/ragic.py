@@ -46,9 +46,9 @@ class Ragic:
         :param member_id: the associated member ID
         :returns: events data from Ragic
         """
-        payload = {'where': [f'{Attendance.TIMECLOCK_STATUS},eq,Open',
-                             f'{Attendance.MEMBERSHIP_ID},eq,{member_id}'],
-                   'api': ''}
+        conditions = [f'{Attendance.TIMECLOCK_STATUS},eq,Open',
+                      f'{Attendance.MEMBERSHIP_ID},eq,{member_id}']
+        payload = {'where': conditions, 'api': ''}
         route = Config.ragic_opportunity_route()
         response = self._get_data(route, payload)
         return response.json()
