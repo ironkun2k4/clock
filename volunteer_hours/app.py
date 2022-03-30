@@ -10,7 +10,8 @@ class Member:
     A member is a user with an ID that starts with 'LYN'
     """
     def __init__(self):
-        self._member_id = ''
+        self._member_id: str = ''
+        self._events: dict[str, int] = {}
 
     def set_member_id(self, member_id: str) -> None:
         """
@@ -21,16 +22,17 @@ class Member:
         if member_id.startswith('LYN'):
             self._member_id = member_id
 
-    def get_events(self) -> list[str]:
+    def get_event_names(self) -> list[str]:
         """
-        Get a list of events assigned to the member
+        Get a list of events names assigned to the member
         :return: a list of events
         """
         if not self._member_id:
             return []
         events = Ragic().fetch_events(self._member_id)
-        names = [event['Opportunity'] for event in events.values()]
-        return names
+        for event in events.values():
+            self._events[event['Opportunity']] = event['Event ID']
+        return list(self._events.keys())
 
 
 member = Member()
@@ -58,6 +60,6 @@ def action_screen() -> str:
         response = make_response("{{'response': {member_id}}")
         response.headers = {'Content-Type': 'application/json'}
         return response
-    events_list = member.get_events()
+    events_list = member.get_event_names()
     content = render_template('action.html', events=events_list)
     return content
