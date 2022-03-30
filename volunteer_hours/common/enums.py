@@ -25,3 +25,16 @@ class Attendance:
     EID = 1003807
     OPPORTUNITY = 1003809
     TIMECLOCK_STATUS = 1010008
+
+
+class Hours:
+    """
+    Hours detail data fields
+    """
+    EID = 1003813
+    DATE = 1003908
+    EVENT_ID = 1003914
+    EVENT_NAME = 1003915
+    START_TIME = 1003910
+    NEW_MEMBERSHIP_ID = 1003916
+    END_TIME = 1003911
