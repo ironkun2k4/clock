@@ -34,6 +34,15 @@ class Member:
             self._events[event['Opportunity']] = event['Event ID']
         return list(self._events.keys())
 
+    def get_event_id(self, event_name: str) -> int:
+        """
+        Find the event ID corresponding to the event name
+        :return: an Event ID
+        """
+        if not self._events or event_name not in self._events:
+            raise ValueError('Event not found')
+        return self._events[event_name]
+
 
 member = Member()
 
@@ -71,5 +80,9 @@ def sent_screen() -> str:
     The sent screen to show that the hours have been logged
     :return: content from sent.html with a response from Ragic
     """
+    event_name = request.args.get('event')
+    event_id = member.get_event_id(event_name)
+    print(event_id)
+    # TODO: sent data to Ragic
     content = render_template('sent.html')
     return content
