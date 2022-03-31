@@ -63,3 +63,13 @@ def action_screen() -> str:
     events_list = member.get_event_names()
     content = render_template('action.html', events=events_list)
     return content
+
+
+@app.route('/sent')
+def sent_screen() -> str:
+    """
+    The sent screen to show that the hours have been logged
+    :return: content from sent.html with a response from Ragic
+    """
+    content = render_template('sent.html')
+    return content
