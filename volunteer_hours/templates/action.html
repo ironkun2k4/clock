@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
     <head>
-        <meta charset="UTF-8">
+        <meta charset='UTF-8'>
         <title>Clock in/out</title>
     </head>
     <body>
-        <form>
+        <form id='sent' action='/sent'>
             <div>
-                <label for="event"><b>Event to clock in/out for</b></label>
+                <label for='event'><b>Event to clock in/out for</b></label>
                 <br>
-                <select id="event" name="event" method="GET" action="/">
+                <select id='event' name='event' method='GET' action='/'>
                     {% for event in events %}
                         <option value="{{event}}">{{event}}</option>
                     {% endfor %}
                 </select>
             </div>
             <br>
-            <input type="submit" value="Submit">
+            <input type='submit' value='Submit'>
         </form>
     </body>
 </html>

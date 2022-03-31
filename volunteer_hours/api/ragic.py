@@ -4,7 +4,7 @@ A wrapper for the Ragic API
 import requests
 
 from volunteer_hours import Config
-from volunteer_hours.common.enums import Http, Attendance
+from volunteer_hours.common.enums import Http, Attendance, Hours
 
 
 class Ragic:
