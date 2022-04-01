@@ -53,13 +53,41 @@ class Ragic:
         response = self._get_data(route, payload)
         return response.json()
 
-    def log_hours(self, member_id: str, event_id: int) -> dict:
+    def is_clocked_in(self, member_id: str, event_id: int) -> bool:
         """
-        Clock in if the member is not clocked in, otherwise clock out
+        Check for an existing record that has not been completed
         """
-        # TODO: Check if an open record already exists (clocked in)
+        # TODO: Find status for clocked in members
+        # TODO: Date should be today
+        conditions = [f'{Hours.STATUS},eq,Pending',
+                      f'{Hours.EVENT_ID},eq,{event_id}',
+                      f'{Hours.NEW_MEMBERSHIP_ID},eq,{member_id}']
+        payload = {'where': conditions, 'api': ''}
+        route = Config.ragic_hours_detail()
+        response = self._get_data(route, payload)
+        return bool(response.json())
+
+    def clock_in(self, member_id: str, event_id: int) -> dict:
+        """
+        Clock in by creating a new record in hours detail
+        """
         route = Config.ragic_hours_detail()
         payload = {Hours.EVENT_ID: event_id,
                    Hours.NEW_MEMBERSHIP_ID: member_id}
         response = self._send_data(route, payload)
         return response.json()
+
+    def clock_out(self, member_id: str, event_id: int) -> dict:
+        """
+        Clock out by modifying an existing record in hours detail
+        """
+
+    def log_hours(self, member_id: str, event_id: int) -> None:
+        """
+        Clock in if the member is not clocked in, otherwise clock out
+        """
+        # TODO: Check if an open record already exists (clocked in)
+        if self.is_clocked_in(member_id, event_id):
+            self.clock_out(member_id, event_id)
+        else:
+            self.clock_in(member_id, event_id)
