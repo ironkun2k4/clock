@@ -52,3 +52,14 @@ class Ragic:
         route = Config.ragic_opportunity_route()
         response = self._get_data(route, payload)
         return response.json()
+
+    def log_hours(self, member_id: str, event_id: int) -> dict:
+        """
+        Clock in if the member is not clocked in, otherwise clock out
+        """
+        # TODO: Check if an open record already exists (clocked in)
+        route = Config.ragic_hours_detail()
+        payload = {Hours.EVENT_ID: event_id,
+                   Hours.NEW_MEMBERSHIP_ID: member_id}
+        response = self._send_data(route, payload)
+        return response.json()

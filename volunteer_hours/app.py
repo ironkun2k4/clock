@@ -83,6 +83,6 @@ def sent_screen() -> str:
     event_name = request.args.get('event')
     event_id = member.get_event_id(event_name)
     print(event_id)
-    # TODO: sent data to Ragic
+    # TODO: send data to Ragic
     content = render_template('sent.html')
     return content

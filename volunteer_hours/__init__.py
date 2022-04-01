@@ -46,6 +46,7 @@ class Config(metaclass=ThreadSafeMeta):
                         if os.name == 'nt'
                         else Path().home() / '.config' / __package)
         __ragic_opportunity_route = 'lynvolunteer/lyn-temp/9'
+        __ragic_hours_detail = 'lynvolunteer/lyn-temp/55'
     except KeyError as error:
         sys.stderr.write(f"Dotenv config error: {error} is missing\n")
         sys.exit(1)
@@ -105,3 +106,10 @@ class Config(metaclass=ThreadSafeMeta):
         Getter for ragic opportunity route
         """
         return cls.__ragic_opportunity_route
+
+    @classmethod
+    def ragic_hours_detail(cls) -> str:
+        """
+        Getter for ragic hours detail
+        """
+        return cls.__ragic_hours_detail
