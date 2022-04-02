@@ -16,6 +16,7 @@ def main_screen() -> str:
     The main page for scanning QR code
     :return: content from index.html
     """
+    member.reset_member_id()
     content = render_template('index.html')
     return content
 

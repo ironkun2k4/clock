@@ -25,12 +25,20 @@ class Member:
     def member_id(self, member_id: str) -> None:
         """
         Setter for member ID
-        :param member_id: a valid member ID
+        :param member_id: a member ID
         :return: None
         """
         valid_prefix = Config.member_prefix()
         if member_id.startswith(valid_prefix):
+            print(f"Setting member ID to {member_id}")
             self._member_id = member_id
+
+    def reset_member_id(self) -> None:
+        """
+        Set membeer ID to an empty string
+        :return: None
+        """
+        self._member_id = ''
 
     def get_event_names(self) -> list[str]:
         """

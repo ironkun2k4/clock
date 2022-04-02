@@ -18,7 +18,7 @@ poetry install
 poetry run flask run
 ```
 
-## Tech stack
+## Tech Stack
 
 Client-side
 - HTML
