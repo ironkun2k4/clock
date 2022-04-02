@@ -1,58 +1,12 @@
+"""
+A Flask application for logging volunteer hours
+"""
 from flask import Flask, request, render_template, make_response
 
 from volunteer_hours.api.ragic import Ragic
+from volunteer_hours.common.member import Member
 
 app = Flask(__name__)
-
-
-class Member:
-    """
-    A member is a user with an ID that starts with 'LYN'
-    """
-    def __init__(self):
-        self._member_id: str = ''
-        self._events: dict[str, int] = {}
-
-    @property
-    def member_id(self) -> str:
-        """
-        Getter for member ID
-        :return: stored member ID
-        """
-        return self._member_id
-
-    @member_id.setter
-    def member_id(self, member_id: str) -> None:
-        """
-        Setter for member ID
-        :param member_id: a valid member ID
-        :return: None
-        """
-        if member_id.startswith('LYN'):
-            self._member_id = member_id
-
-    def get_event_names(self) -> list[str]:
-        """
-        Get a list of events names assigned to the member
-        :return: a list of events
-        """
-        if not self._member_id:
-            return []
-        events = Ragic().fetch_events(self._member_id)
-        for event in events.values():
-            self._events[event['Opportunity']] = event['Event ID']
-        return list(self._events.keys())
-
-    def get_event_id(self, event_name: str) -> int:
-        """
-        Find the event ID corresponding to the event name
-        :return: an Event ID
-        """
-        if not self._events or event_name not in self._events:
-            raise ValueError('Event not found')
-        return self._events[event_name]
-
-
 member = Member()
 
 
@@ -91,6 +45,6 @@ def sent_screen() -> str:
     """
     event_name = request.args.get('event')
     event_id = member.get_event_id(event_name)
-    Ragic().log_hours(member.member_id, event_id)
-    content = render_template('sent.html')
+    message = Ragic().log_hours(member.member_id, event_id)
+    content = render_template('sent.html', message=message)
     return content
