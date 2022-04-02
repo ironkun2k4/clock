@@ -1,12 +1,13 @@
 """
 Define class for member
 """
+from volunteer_hours import Config
 from volunteer_hours.api.ragic import Ragic
 
 
 class Member:
     """
-    A member is a user with an ID that starts with 'LYN'
+    A member is an end user with a valid member ID
     """
     def __init__(self):
         self._member_id: str = ''
@@ -27,7 +28,8 @@ class Member:
         :param member_id: a valid member ID
         :return: None
         """
-        if member_id.startswith('LYN'):
+        valid_prefix = Config.member_prefix()
+        if member_id.startswith(valid_prefix):
             self._member_id = member_id
 
     def get_event_names(self) -> list[str]:
