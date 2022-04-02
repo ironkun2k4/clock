@@ -39,7 +39,6 @@ class Member:
         if not self._member_id:
             return []
         events = Ragic().fetch_events(self._member_id)
-        print(events)
         for event in events.values():
             self._events[event['Opportunity']] = event['Event ID']
         return list(self._events.keys())
@@ -92,6 +91,6 @@ def sent_screen() -> str:
     """
     event_name = request.args.get('event')
     event_id = member.get_event_id(event_name)
-    Ragic().log_hour(member.member_id, event_id, event_name)
+    Ragic().log_hours(member.member_id, event_id)
     content = render_template('sent.html')
     return content

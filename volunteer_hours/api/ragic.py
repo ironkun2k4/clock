@@ -55,18 +55,19 @@ class Ragic:
         response = self._get_data(route, payload)
         return response.json()
 
-    def _is_clocked_in(self, member_id: str, event_id: int) -> bool:
+    def _get_hours_detail(self, member_id: str, event_id: int) -> dict:
         """
-        Check for an hours detail record where status is incomplete
+        Get the hours detail of the current member
         """
-        # TODO: Start date should be today
+        date = datetime.now().strftime(Config.date_format())
         conditions = [f'{Hours.STATUS},eq,Incomplete',
+                      f'{Hours.DATE},eq,{date}',
                       f'{Hours.EVENT_ID},eq,{event_id}',
                       f'{Hours.NEW_MEMBERSHIP_ID},eq,{member_id}']
         payload = {'where': conditions, 'api': ''}
         route = Config.ragic_hours_detail()
         response = self._get_data(route, payload)
-        return bool(response.json())
+        return response.json()
 
     def _clock_in(self, eid: str, member_id: str, event_id: int) -> dict:
         """
@@ -84,20 +85,26 @@ class Ragic:
         response = self._send_data(route, payload)
         return response.json()
 
-    def _clock_out(self, member_id: str, event_id: int) -> dict:
+    def _clock_out(self, record_id: str) -> dict:
         """
         Clock out by modifying an existing record in hours detail
         """
-        # TODO: Modify existing value
+        route = f'{Config.ragic_hours_detail()}/{record_id}'
+        time = datetime.now().strftime(Config.time_format())
+        payload = {Hours.END_TIME: time}
+        response = self._send_data(route, payload)
+        return response.json()
 
     def log_hours(self, member_id: str, event_id: int) -> None:
         """
         Clock in if the member is not clocked in, otherwise clock out
         """
-        attendance_info = self.fetch_events(member_id)
-        event_details = list(attendance_info.values())[0]
-        eid = event_details['EID']
-        if self._is_clocked_in(member_id, event_id):
-            self._clock_out(member_id, event_id)
+        hours_info = self._get_hours_detail(member_id, event_id)
+        record_id = list(hours_info.keys())[0] if hours_info else ''
+        if record_id:
+            self._clock_out(record_id)
         else:
+            attendance_info = self.fetch_events(member_id)
+            event_details = list(attendance_info.values())[0]
+            eid = event_details['EID']
             self._clock_in(eid, member_id, event_id)
