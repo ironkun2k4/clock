@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "volunteer_hours"
-version = "0.1.0"
+version = "1.0.0"
 description = ""
 authors = ["Jacky Lee <jla524@sfu.ca>"]
 
