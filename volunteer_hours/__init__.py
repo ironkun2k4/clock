@@ -45,8 +45,10 @@ class Config(metaclass=ThreadSafeMeta):
         __config_dir = (Path().home() / 'AppData' / 'Local' / __package
                         if os.name == 'nt'
                         else Path().home() / '.config' / __package)
-        __ragic_opportunity_route = 'lynvolunteer/lyn-temp/9'
+        __ragic_attendance_route = 'lynvolunteer/lyn-temp/9'
         __ragic_hours_detail = 'lynvolunteer/lyn-temp/55'
+        __date_format = '%Y/%m/%d'
+        __time_format = '%H:%M'
     except KeyError as error:
         sys.stderr.write(f"Dotenv config error: {error} is missing\n")
         sys.exit(1)
@@ -101,11 +103,11 @@ class Config(metaclass=ThreadSafeMeta):
         return cls.__config_dir
 
     @classmethod
-    def ragic_opportunity_route(cls) -> str:
+    def ragic_attendance_route(cls) -> str:
         """
-        Getter for ragic opportunity route
+        Getter for ragic attendance route
         """
-        return cls.__ragic_opportunity_route
+        return cls.__ragic_attendance_route
 
     @classmethod
     def ragic_hours_detail(cls) -> str:
@@ -113,3 +115,17 @@ class Config(metaclass=ThreadSafeMeta):
         Getter for ragic hours detail
         """
         return cls.__ragic_hours_detail
+
+    @classmethod
+    def date_format(cls) -> str:
+        """
+        Getter for date format
+        """
+        return cls.__date_format
+
+    @classmethod
+    def time_format(cls) -> str:
+        """
+        Getter for time format
+        """
+        return cls.__time_format

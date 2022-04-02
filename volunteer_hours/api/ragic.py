@@ -1,6 +1,8 @@
 """
 A wrapper for the Ragic API
 """
+from datetime import datetime
+
 import requests
 
 from volunteer_hours import Config
@@ -49,17 +51,16 @@ class Ragic:
         conditions = [f'{Attendance.TIMECLOCK_STATUS},eq,Open',
                       f'{Attendance.MEMBERSHIP_ID},eq,{member_id}']
         payload = {'where': conditions, 'api': ''}
-        route = Config.ragic_opportunity_route()
+        route = Config.ragic_attendance_route()
         response = self._get_data(route, payload)
         return response.json()
 
-    def is_clocked_in(self, member_id: str, event_id: int) -> bool:
+    def _is_clocked_in(self, member_id: str, event_id: int) -> bool:
         """
-        Check for an existing record that has not been completed
+        Check for an hours detail record where status is incomplete
         """
-        # TODO: Find status for clocked in members
-        # TODO: Date should be today
-        conditions = [f'{Hours.STATUS},eq,Pending',
+        # TODO: Start date should be today
+        conditions = [f'{Hours.STATUS},eq,Incomplete',
                       f'{Hours.EVENT_ID},eq,{event_id}',
                       f'{Hours.NEW_MEMBERSHIP_ID},eq,{member_id}']
         payload = {'where': conditions, 'api': ''}
@@ -67,27 +68,36 @@ class Ragic:
         response = self._get_data(route, payload)
         return bool(response.json())
 
-    def clock_in(self, member_id: str, event_id: int) -> dict:
+    def _clock_in(self, eid: str, member_id: str, event_id: int) -> dict:
         """
         Clock in by creating a new record in hours detail
         """
         route = Config.ragic_hours_detail()
-        payload = {Hours.EVENT_ID: event_id,
-                   Hours.NEW_MEMBERSHIP_ID: member_id}
+        now = datetime.now()
+        date = now.strftime(Config.date_format())
+        time = now.strftime(Config.time_format())
+        payload = {Hours.EID: eid,
+                   Hours.DATE: date,
+                   Hours.EVENT_ID: event_id,
+                   Hours.NEW_MEMBERSHIP_ID: member_id,
+                   Hours.START_TIME: time}
         response = self._send_data(route, payload)
         return response.json()
 
-    def clock_out(self, member_id: str, event_id: int) -> dict:
+    def _clock_out(self, member_id: str, event_id: int) -> dict:
         """
         Clock out by modifying an existing record in hours detail
         """
+        # TODO: Modify existing value
 
     def log_hours(self, member_id: str, event_id: int) -> None:
         """
         Clock in if the member is not clocked in, otherwise clock out
         """
-        # TODO: Check if an open record already exists (clocked in)
-        if self.is_clocked_in(member_id, event_id):
-            self.clock_out(member_id, event_id)
+        attendance_info = self.fetch_events(member_id)
+        event_details = list(attendance_info.values())[0]
+        eid = event_details['EID']
+        if self._is_clocked_in(member_id, event_id):
+            self._clock_out(member_id, event_id)
         else:
-            self.clock_in(member_id, event_id)
+            self._clock_in(eid, member_id, event_id)

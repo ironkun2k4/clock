@@ -13,7 +13,16 @@ class Member:
         self._member_id: str = ''
         self._events: dict[str, int] = {}
 
-    def set_member_id(self, member_id: str) -> None:
+    @property
+    def member_id(self) -> str:
+        """
+        Getter for member ID
+        :return: stored member ID
+        """
+        return self._member_id
+
+    @member_id.setter
+    def member_id(self, member_id: str) -> None:
         """
         Setter for member ID
         :param member_id: a valid member ID
@@ -30,6 +39,7 @@ class Member:
         if not self._member_id:
             return []
         events = Ragic().fetch_events(self._member_id)
+        print(events)
         for event in events.values():
             self._events[event['Opportunity']] = event['Event ID']
         return list(self._events.keys())
@@ -65,7 +75,7 @@ def action_screen() -> str:
     """
     if request.method == 'POST':
         member_id = request.form.get('member_id')
-        member.set_member_id(member_id)
+        member.member_id = member_id
         response = make_response("{{'response': {member_id}}")
         response.headers = {'Content-Type': 'application/json'}
         return response
@@ -82,7 +92,6 @@ def sent_screen() -> str:
     """
     event_name = request.args.get('event')
     event_id = member.get_event_id(event_name)
-    print(event_id)
-    # TODO: send data to Ragic
+    Ragic().log_hour(member.member_id, event_id, event_name)
     content = render_template('sent.html')
     return content
