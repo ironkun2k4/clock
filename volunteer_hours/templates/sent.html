@@ -5,7 +5,16 @@
         <title>Sent</title>
     </head>
     <body>
-		<p>Your hours have been logged.</p>
-		<!-- TODO: return to main page after a few seconds -->
+		<p>{{message}}</p>
+		<form id='form' action='/' hidden>
+			<input type='submit' id='return-btn' name='return-btn'>
+		</form>
+		<script>
+			const returnButton = document.getElementById('return-btn');
+			const timeout = setTimeout(returnToMain, 3000);
+			function returnToMain() {
+				returnButton.click();
+			}
+		</script>
 	</body>
 </html>
